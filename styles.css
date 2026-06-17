@@ -33,8 +33,9 @@ table,th,td,tbody {
 
 .container {
     width: 20%;
+    height: 100px;
     margin: auto;
-    padding: 15px;
+    padding: 5px;
     background-color: #1e1e1e;
     border-radius: 10px;
 }
@@ -49,4 +50,13 @@ table,th,td,tbody {
     font-size: 28px;
     font-weight: bold;
     color: #00ff5e;
+}
+
+.containers {
+    width: 20%;
+    height: 20px;
+    margin: auto;
+    padding: 5px;
+    background-color: #1e1e1e;
+    border-radius: 10px;
 }
