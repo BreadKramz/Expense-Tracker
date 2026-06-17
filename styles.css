@@ -34,7 +34,19 @@ table,th,td,tbody {
 .container {
     width: 20%;
     margin: auto;
-    padding: 10px;
-    background-color: #212121;
+    padding: 15px;
+    background-color: #1e1e1e;
     border-radius: 10px;
+}
+
+.balance-title {
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 5px;
+}
+
+#amountResult {
+    font-size: 28px;
+    font-weight: bold;
+    color: #00ff5e;
 }

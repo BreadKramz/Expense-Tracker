@@ -18,12 +18,12 @@ function addExpense() {
     }
 
     document.getElementById('expenseDescription').innerHTML += description + '<br><hr>';
-    document.getElementById('expenseAmount').innerHTML += '' + amount + '<br><hr>';
+    document.getElementById('expenseAmount').innerHTML += '₱' + amount.toFixed(2) + '<br><hr>';
     document.getElementById('expenseResult').innerHTML += total + ' - ' + amount + ' = ' + (total-amount) + '<br><hr>';
     
     total = total - amount;
     
-    document.getElementById('amountResult').innerHTML = ' ' + total;
+    document.getElementById('amountResult').innerHTML = '₱ ' + total;
     document.getElementById('description').value = '';
     document.getElementById('amount').value = '';
 }  
@@ -35,6 +35,6 @@ function addTotalAmount() {
 
     total = total + addedAmount;
 
-    document.getElementById('amountResult').innerHTML = ' ' + total;
+    document.getElementById('amountResult').innerHTML = '₱ ' + total.toFixed(2);
     document.getElementById('totalAmount').value = '';
 }
