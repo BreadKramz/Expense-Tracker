@@ -40,33 +40,19 @@ body {
     color: #00ff5e;
 }
 
-/* INPUT SECTION */
-.input-section {
+/* BUTTONS */
+button {
     width: 90%;
     max-width: 400px;
-    margin: 10px auto;
-}
-
-input {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 20px;
-    border: none;
-    box-sizing: border-box;
-}
-
-button {
-    width: 100%;
     padding: 10px;
     margin: 5px 0;
     border-radius: 20px;
     background-color: #2766b2;
     color: white;
     border: none;
-    cursor: pointer;
 }
 
+/* ALERT */
 #alerts {
     color: red;
     margin-top: 10px;
@@ -93,4 +79,38 @@ table, th, td {
 th, td {
     padding: 8px;
     font-size: 14px;
+}
+
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+    background: #1e1e1e;
+    width: 90%;
+    max-width: 400px;
+    margin: 120px auto;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 10px;
+    border: none;
+    box-sizing: border-box;
+}
+
+.modal-content button {
+    width: 100%;
+    margin: 5px 0;
 }

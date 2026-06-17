@@ -1,11 +1,6 @@
 let total = 0;
 
-// allow letters only in description
-document.getElementById('description').addEventListener('input', function () {
-    this.value = this.value.replace(/[^A-Za-z ]/g, '');
-});
-
-// format money (1,000.00)
+// format money
 function formatMoney(value) {
     return Number(value).toLocaleString('en-US', {
         minimumFractionDigits: 2,
@@ -13,42 +8,77 @@ function formatMoney(value) {
     });
 }
 
-function addExpense() {
-
-    const description = document.getElementById('description').value;
-    const amount = Number(document.getElementById('amount').value);
-
-    if (!amount) return;
-
-    document.getElementById('alerts').innerHTML = '';
-
-    if (amount > total) {
-        document.getElementById('alerts').innerHTML = 'Insufficient funds!';
-        return;
-    }
-
-    document.getElementById('expenseDescription').innerHTML += description + '<br><hr>';
-    document.getElementById('expenseAmount').innerHTML += '₱' + formatMoney(amount) + '<br><hr>';
-    document.getElementById('expenseResult').innerHTML +=
-        formatMoney(total) + ' - ' + formatMoney(amount) + ' = ' + formatMoney(total - amount) + '<br><hr>';
-
-    total = total - amount;
-
-    document.getElementById('amountResult').innerHTML = '₱ ' + formatMoney(total);
-
-    document.getElementById('description').value = '';
-    document.getElementById('amount').value = '';
+// MODAL CONTROLS
+function openTotalModal() {
+    document.getElementById('totalModal').style.display = 'block';
 }
 
-function addTotalAmount() {
+function closeTotalModal() {
+    document.getElementById('totalModal').style.display = 'none';
+}
 
-    const addedAmount = Number(document.getElementById('totalAmount').value);
+function openExpenseModal() {
+    document.getElementById('expenseModal').style.display = 'block';
+}
+
+function closeExpenseModal() {
+    document.getElementById('expenseModal').style.display = 'none';
+}
+
+// ADD TOTAL
+function submitTotal() {
+
+    const addedAmount =
+        Number(document.getElementById('modalTotalAmount').value);
 
     if (!addedAmount) return;
 
     total = total + addedAmount;
 
-    document.getElementById('amountResult').innerHTML = '₱ ' + formatMoney(total);
+    document.getElementById('amountResult').innerHTML =
+        '₱ ' + formatMoney(total);
 
-    document.getElementById('totalAmount').value = '';
+    document.getElementById('modalTotalAmount').value = '';
+
+    closeTotalModal();
+}
+
+// ADD EXPENSE
+function submitExpense() {
+
+    const description =
+        document.getElementById('modalDescription').value;
+
+    const amount =
+        Number(document.getElementById('modalAmount').value);
+
+    if (!amount) return;
+
+    if (amount > total) {
+        document.getElementById('alerts').innerHTML =
+            'Insufficient funds!';
+        return;
+    }
+
+    document.getElementById('alerts').innerHTML = '';
+
+    document.getElementById('expenseDescription').innerHTML +=
+        description + '<br><hr>';
+
+    document.getElementById('expenseAmount').innerHTML +=
+        '₱' + formatMoney(amount) + '<br><hr>';
+
+    document.getElementById('expenseResult').innerHTML +=
+        formatMoney(total) + ' - ' + formatMoney(amount) +
+        ' = ' + formatMoney(total - amount) + '<br><hr>';
+
+    total = total - amount;
+
+    document.getElementById('amountResult').innerHTML =
+        '₱ ' + formatMoney(total);
+
+    document.getElementById('modalDescription').value = '';
+    document.getElementById('modalAmount').value = '';
+
+    closeExpenseModal();
 }

@@ -15,16 +15,8 @@
         <p id="amountResult">₱ 0.00</p>
     </div>
 
-    <div class="input-section">
-        <input type="number" id="totalAmount" placeholder="Total Amount">
-        <button onclick="addTotalAmount()">Add Total</button>
-    </div>
-
-    <div class="input-section">
-        <input type="text" id="description" placeholder="Description">
-        <input type="number" id="amount" placeholder="Amount">
-        <button onclick="addExpense()">Add Expense</button>
-    </div>
+    <button onclick="openTotalModal()">Add Total</button><br>
+    <button onclick="openExpenseModal()">Add Expense</button>
 
     <p id="alerts"></p>
 
@@ -35,12 +27,36 @@
                 <th>Amount</th>
                 <th>Result</th>
             </tr>
+
             <tr>
                 <td id="expenseDescription"></td>
                 <td id="expenseAmount"></td>
                 <td id="expenseResult"></td>
             </tr>
         </table>
+    </div>
+
+    <!-- TOTAL MODAL -->
+    <div id="totalModal" class="modal">
+        <div class="modal-content">
+            <h3>Add Total</h3>
+            <input type="number" id="modalTotalAmount" placeholder="Total Amount">
+            <button onclick="submitTotal()">Save</button>
+            <button onclick="closeTotalModal()">Close</button>
+        </div>
+    </div>
+
+    <!-- EXPENSE MODAL -->
+    <div id="expenseModal" class="modal">
+        <div class="modal-content">
+            <h3>Add Expense</h3>
+
+            <input type="text" id="modalDescription" placeholder="Description">
+            <input type="number" id="modalAmount" placeholder="Amount">
+
+            <button onclick="submitExpense()">Save</button>
+            <button onclick="closeExpenseModal()">Close</button>
+        </div>
     </div>
 
     <script src="script.js"></script>
