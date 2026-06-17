@@ -7,7 +7,6 @@ body {
     padding: 10px;
 }
 
-/* TITLE */
 .title {
     width: 90%;
     max-width: 400px;
@@ -18,7 +17,6 @@ body {
     font-size: 18px;
 }
 
-/* BALANCE */
 .container {
     width: 90%;
     max-width: 400px;
@@ -40,25 +38,11 @@ body {
     color: #00ff5e;
 }
 
-/* BUTTONS */
-button {
-    width: 90%;
-    max-width: 400px;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 20px;
-    background-color: #2766b2;
-    color: white;
-    border: none;
-}
-
-/* ALERT */
 #alerts {
     color: red;
     margin-top: 10px;
 }
 
-/* TABLE */
 .table-container {
     width: 100%;
     overflow-x: auto;
@@ -81,7 +65,6 @@ th, td {
     font-size: 14px;
 }
 
-/* MODAL */
 .modal {
     display: none;
     position: fixed;
@@ -113,4 +96,32 @@ th, td {
 .modal-content button {
     width: 100%;
     margin: 5px 0;
+}
+
+button {
+    width: 90%;
+    max-width: 400px;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 20px;
+    background-color: #2766b2;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+/* normal hover */
+button:hover {
+    background-color: #1a4d99;
+}
+
+/* red buttons */
+.btn-danger {
+    background-color: #ff4d4d;
+}
+
+/* red hover stays red (or slightly darker) */
+.btn-danger:hover {
+    background-color: #cc0000;
 }

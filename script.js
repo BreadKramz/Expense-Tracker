@@ -1,6 +1,5 @@
 let total = 0;
 
-// format money
 function formatMoney(value) {
     return Number(value).toLocaleString('en-US', {
         minimumFractionDigits: 2,
@@ -8,7 +7,6 @@ function formatMoney(value) {
     });
 }
 
-// MODAL CONTROLS
 function openTotalModal() {
     document.getElementById('totalModal').style.display = 'block';
 }
@@ -25,7 +23,6 @@ function closeExpenseModal() {
     document.getElementById('expenseModal').style.display = 'none';
 }
 
-// ADD TOTAL
 function submitTotal() {
 
     const addedAmount =
@@ -43,7 +40,6 @@ function submitTotal() {
     closeTotalModal();
 }
 
-// ADD EXPENSE
 function submitExpense() {
 
     const description =
