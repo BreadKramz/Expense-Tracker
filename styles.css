@@ -1,41 +1,29 @@
-body{
+body {
     font-family: Times New Roman, serif;
-    background-color: #000000;
-    color: #ffffff;
+    background-color: #000;
+    color: #fff;
     text-align: center;
-}
-
-input {
+    margin: 0;
     padding: 10px;
-    border-radius: 50px;
 }
 
-button {
-    padding: 10px;
-    border-radius: 50px;
-    background-color: #2766b2;
-    color: rgb(0, 0, 0);
-
-}
-
-table {
-    margin-left: auto;
-    margin-right: auto;
-    width: 30%;
-    border-collapse: collapse;
-
-}
-
-table,th,td,tbody {
-    border: 1px solid white;
-    
-}
-
-.container {
-    width: 20%;
-    height: 100px;
+/* TITLE */
+.title {
+    width: 90%;
+    max-width: 400px;
     margin: auto;
-    padding: 5px;
+    padding: 10px;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    font-size: 18px;
+}
+
+/* BALANCE */
+.container {
+    width: 90%;
+    max-width: 400px;
+    margin: 10px auto;
+    padding: 10px;
     background-color: #1e1e1e;
     border-radius: 10px;
 }
@@ -47,16 +35,62 @@ table,th,td,tbody {
 }
 
 #amountResult {
-    font-size: 28px;
+    font-size: 26px;
     font-weight: bold;
     color: #00ff5e;
 }
 
-.containers {
-    width: 20%;
-    height: 20px;
-    margin: auto;
-    padding: 5px;
-    background-color: #1e1e1e;
-    border-radius: 10px;
+/* INPUT SECTION */
+.input-section {
+    width: 90%;
+    max-width: 400px;
+    margin: 10px auto;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 20px;
+    border: none;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 20px;
+    background-color: #2766b2;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#alerts {
+    color: red;
+    margin-top: 10px;
+}
+
+/* TABLE */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    margin: 10px auto;
+    width: 95%;
+    max-width: 500px;
+    border-collapse: collapse;
+    min-width: 300px;
+}
+
+table, th, td {
+    border: 1px solid white;
+}
+
+th, td {
+    padding: 8px;
+    font-size: 14px;
 }

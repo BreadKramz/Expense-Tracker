@@ -7,38 +7,41 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="containers">Expense Tracker</div><br>
-    
+
+    <div class="title">Expense Tracker</div>
+
     <div class="container">
-    <p class="balance-title">Current Balance</p>
-    <p id="amountResult">₱ 0.00</p>
-    </div><br>
+        <p class="balance-title">Current Balance</p>
+        <p id="amountResult">₱ 0.00</p>
+    </div>
 
-    <input type="number" id="totalAmount" placeholder= "Total Amount"> 
-    <button onclick="addTotalAmount()">Add Total Amount</button>
+    <div class="input-section">
+        <input type="number" id="totalAmount" placeholder="Total Amount">
+        <button onclick="addTotalAmount()">Add Total</button>
+    </div>
 
-    <br><br>
+    <div class="input-section">
+        <input type="text" id="description" placeholder="Description">
+        <input type="number" id="amount" placeholder="Amount">
+        <button onclick="addExpense()">Add Expense</button>
+    </div>
 
-    <input type="text" id="description" placeholder="Description">
-    <input type="number" id="amount" placeholder="Amount">
-    <button onclick="addExpense()">Add Expense</button>
+    <p id="alerts"></p>
 
-    <p id="alerts" style="color: red;"></p>
-
-    <br>
-
-    <table>
-    <tr>
-        <th>Description</th>
-        <th>Amount</th>
-        <th>Result</th>
-    </tr>
-    <tr>
-        <td id="expenseDescription"></td>
-        <td id="expenseAmount"></td>
-        <td id="expenseResult"></td>
-    </tr>
-    </table>
+    <div class="table-container">
+        <table>
+            <tr>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Result</th>
+            </tr>
+            <tr>
+                <td id="expenseDescription"></td>
+                <td id="expenseAmount"></td>
+                <td id="expenseResult"></td>
+            </tr>
+        </table>
+    </div>
 
     <script src="script.js"></script>
 </body>
