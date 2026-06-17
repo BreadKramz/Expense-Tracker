@@ -1,5 +1,9 @@
 let total = 0;
 
+document.getElementById('description').addEventListener('input', function () {
+    this.value = this.value.replace(/[^A-Za-z ]/g, '');
+});
+
 function addExpense() {
     const description = document.getElementById('description').value;
     const amount = Number(document.getElementById('amount').value);
