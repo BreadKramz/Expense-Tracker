@@ -1,0 +1,32 @@
+body{
+    font-family: Times New Roman, serif;
+    background-color: #3c3c3c;
+    color: #ffffff;
+    text-align: center;
+}
+
+input {
+    padding: 10px;
+    border-radius: 50px;
+}
+
+button {
+    padding: 10px;
+    border-radius: 50px;
+    background-color: #4bff51;
+    color: rgb(0, 0, 0);
+
+}
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+    border-collapse: collapse;
+
+}
+
+table,th,td,tbody {
+    border: 1px solid white;
+    
+}

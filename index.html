@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1 style="color:#4bff51;">Expense Tracker</h1>
+
+    <p id="amountResult">Total Amount: ₱ 0</p>
+
+    <input type="number" id="totalAmount" placeholder="Total Amount"> 
+    <button onclick="addTotalAmount()">Add Total Amount</button>
+
+    <br><br>
+
+    <input type="text" id="description" placeholder="Description">
+    <input type="number" id="amount" placeholder="Amount">
+    <button onclick="addExpense()">Add Expense</button>
+
+    
+    <p id="alerts"></p>
+
+    <table>
+    <tr>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Result</th>
+    </tr>
+    <tr>
+        <td id="expenseDescription"></td>
+        <td id="expenseAmount"></td>
+        <td id="expenseResult"></td>
+    </tr>
+    </table>
+
+    <script src="script.js"></script>
+</body>
+</html>
