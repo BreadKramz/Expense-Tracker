@@ -23,7 +23,7 @@ function addExpense() {
     
     total = total - amount;
     
-    document.getElementById('amountResult').innerHTML = 'Total Amount: ₱ ' + total;
+    document.getElementById('amountResult').innerHTML = '₱ ' + total;
     document.getElementById('description').value = '';
     document.getElementById('amount').value = '';
 }  
@@ -35,6 +35,6 @@ function addTotalAmount() {
 
     total = total + addedAmount;
 
-    document.getElementById('amountResult').innerHTML = 'Total Amount: ₱ ' + total;
+    document.getElementById('amountResult').innerHTML = '₱ ' + total;
     document.getElementById('totalAmount').value = '';
 }

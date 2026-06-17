@@ -1,6 +1,6 @@
 body{
     font-family: Times New Roman, serif;
-    background-color: #3c3c3c;
+    background-color: #000000;
     color: #ffffff;
     text-align: center;
 }
@@ -13,7 +13,7 @@ input {
 button {
     padding: 10px;
     border-radius: 50px;
-    background-color: #4bff51;
+    background-color: #2766b2;
     color: rgb(0, 0, 0);
 
 }
@@ -29,4 +29,12 @@ table {
 table,th,td,tbody {
     border: 1px solid white;
     
+}
+
+.container {
+    width: 40%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #1b1b1b;
+    border-radius: 10px;
 }

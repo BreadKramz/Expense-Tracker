@@ -7,9 +7,11 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1 style="color:#4bff51;">Expense Tracker</h1>
+    <div class="container">
 
-    <p id="amountResult">Total Amount: ₱ 0</p>
+    <h1>Expense Tracker</h1>    
+
+    <p id="amountResult">₱ 0.00</p>
 
     <input type="number" id="totalAmount" placeholder="Total Amount"> 
     <button onclick="addTotalAmount()">Add Total Amount</button>
@@ -20,8 +22,9 @@
     <input type="number" id="amount" placeholder="Amount">
     <button onclick="addExpense()">Add Expense</button>
 
-    
-    <p id="alerts"></p>
+    <p id="alerts" style="color: red;"></p>
+
+    </div><br>
 
     <table>
     <tr>
