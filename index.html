@@ -16,24 +16,29 @@
     </div>
 
     <button onclick="openTotalModal()">Add Total</button><br>
-    <button onclick="openExpenseModal()">Add Expense</button>
+    <button onclick="openExpenseModal()">Add Expense</button><br>
+    <button class="btn-danger" onclick="deleteAllData()">Delete All Data</button>
 
     <p id="alerts"></p>
 
-    <div class="table-container">
-        <table>
-            <tr>
-                <th>Description</th>
-                <th>Amount</th>
-                <th>Result</th>
-            </tr>
+    <button onclick="showTable()">Show Table</button><br>
+    <button class="btn-danger" onclick="hideTable()">Close Table</button>
+    <div id="tableContainer" class="table-container">
+    <table>
+        <tr>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Result</th>
+            <th>Action</th>
+        </tr>
 
-            <tr>
-                <td id="expenseDescription"></td>
-                <td id="expenseAmount"></td>
-                <td id="expenseResult"></td>
-            </tr>
-        </table>
+        <tr>
+            <td id="expenseDescription"></td>
+            <td id="expenseAmount"></td>
+            <td id="expenseResult"></td>
+            <td id="expenseActions"></td>
+        </tr>
+    </table>
     </div>
 
     <div id="totalModal" class="modal">

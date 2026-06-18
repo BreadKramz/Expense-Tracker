@@ -48,6 +48,10 @@ body {
     overflow-x: auto;
 }
 
+#tableContainer {
+    display: none;
+}
+
 table {
     margin: 10px auto;
     width: 95%;
@@ -95,7 +99,6 @@ th, td {
 
 .modal-content button {
     width: 100%;
-    margin: 5px 0;
 }
 
 button {
@@ -121,4 +124,18 @@ button:hover {
 
 .btn-danger:hover {
     background-color: #cc0000;
+}
+
+.inline-btn {
+    width: auto;
+    padding: 3px 8px;
+    margin-left: 6px;
+    border-radius: 5px;
+    font-size: 12px;
+    background-color: #444;
+    color: white;
+}
+
+.inline-btn:hover {
+    background-color: #666;
 }
