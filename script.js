@@ -1,5 +1,11 @@
-let total = Number(localStorage.getItem("total")) || 0;
+let transactions = [];
 let expenses = [];
+
+try {
+    transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+} catch {
+    transactions = [];
+}
 
 try {
     expenses = JSON.parse(localStorage.getItem("expenses")) || [];
@@ -7,16 +13,37 @@ try {
     expenses = [];
 }
 
+const savedTotal = Number(localStorage.getItem("total")) || 0;
 const savedInitialTotal = localStorage.getItem("initialTotal");
 
-if (savedInitialTotal !== null) {
-    total = Number(savedInitialTotal) || 0;
-} else if (expenses.length > 0) {
-    total += expenses.reduce(function (sum, item) {
-        return sum + (Number(item.amount) || 0);
-    }, 0);
+if (transactions.length === 0 && (savedTotal > 0 || expenses.length > 0)) {
+    let initialTotal = savedInitialTotal !== null ? Number(savedInitialTotal) || 0 : savedTotal;
 
-    localStorage.setItem("initialTotal", String(total));
+    if (savedInitialTotal === null && expenses.length > 0) {
+        initialTotal += expenses.reduce(function (sum, item) {
+            return sum + (Number(item.amount) || 0);
+        }, 0);
+    }
+
+    if (initialTotal > 0) {
+        transactions.push({
+            type: "amount",
+            description: "Added Amount",
+            amount: initialTotal
+        });
+    }
+
+    expenses.forEach(function (item) {
+        const amount = Number(item.amount) || 0;
+
+        if (amount > 0) {
+            transactions.push({
+                type: "expense",
+                description: item.description || "Expense",
+                amount: amount
+            });
+        }
+    });
 }
 
 const els = {
@@ -91,7 +118,7 @@ els.expensesBody.addEventListener("click", function (event) {
 
     if (!button) return;
 
-    deleteExpense(Number(button.dataset.deleteIndex));
+    deleteTransaction(Number(button.dataset.deleteIndex));
 });
 
 function formatMoney(value) {
@@ -103,55 +130,89 @@ function formatMoney(value) {
 
 function render() {
     renderBalance();
-    renderExpenses();
+    renderTransactions();
 }
 
 function renderBalance() {
     els.amountResult.textContent = "₱ " + formatMoney(getRemainingBalance());
 }
 
-function getRemainingBalance() {
-    return total - expenses.reduce(function (sum, item) {
-        return sum + (Number(item.amount) || 0);
+function getTransactionAmount(item) {
+    const amount = Number(item.amount);
+    return Number.isFinite(amount) ? amount : 0;
+}
+
+function getTotalAdded() {
+    return transactions.reduce(function (sum, item) {
+        return item.type === "amount" ? sum + getTransactionAmount(item) : sum;
     }, 0);
 }
 
-function renderExpenses() {
+function getRemainingBalance() {
+    return transactions.reduce(function (sum, item) {
+        return item.type === "amount" ? sum + getTransactionAmount(item) : sum - getTransactionAmount(item);
+    }, 0);
+}
+
+function renderTransactions() {
     const fragment = document.createDocumentFragment();
-    let remainingBalance = total;
+    let remainingBalance = 0;
 
-    expenses.forEach(function (item, index) {
+    transactions.forEach(function (item, index) {
         const row = document.createElement("tr");
+        const isExpense = item.type === "expense";
+        const description = item.description || (isExpense ? "Expense" : "Added Amount");
+        const amount = getTransactionAmount(item);
 
-        remainingBalance -= Number(item.amount) || 0;
+        remainingBalance += isExpense ? -amount : amount;
 
-        addCell(row, "description", "Description", item.description);
-        addCell(row, "amount", "Amount", "₱" + formatMoney(item.amount));
+        addCell(row, "description", "Description", description);
+
+        const typeCell = document.createElement("td");
+        typeCell.dataset.label = "Type";
+        typeCell.className = "type";
+
+        const typeBadge = document.createElement("span");
+        typeBadge.className = "transaction-type " + (isExpense ? "expense" : "amount");
+        typeBadge.textContent = isExpense ? "Expense" : "Amount";
+
+        typeCell.appendChild(typeBadge);
+        row.appendChild(typeCell);
+
+        addCell(row, "amount", "Amount", "₱" + formatMoney(amount));
         addCell(row, "result", "Remaining", "₱" + formatMoney(remainingBalance));
 
-        const actionCell = document.createElement("td");
-        actionCell.dataset.label = "Action";
-        actionCell.className = "action-cell";
+        if (isExpense) {
+            const actionCell = document.createElement("td");
+            actionCell.dataset.label = "Action";
+            actionCell.className = "action-cell";
 
-        const deleteButton = document.createElement("button");
-        deleteButton.type = "button";
-        deleteButton.className = "inline-btn";
-        deleteButton.textContent = "Delete";
-        deleteButton.setAttribute("aria-label", "Delete " + item.description);
-        deleteButton.dataset.deleteIndex = index;
+            const deleteButton = document.createElement("button");
+            deleteButton.type = "button";
+            deleteButton.className = "inline-btn";
+            deleteButton.textContent = "Delete";
+            deleteButton.setAttribute("aria-label", "Delete " + description);
+            deleteButton.dataset.deleteIndex = index;
 
-        actionCell.appendChild(deleteButton);
-        row.appendChild(actionCell);
+            actionCell.appendChild(deleteButton);
+            row.appendChild(actionCell);
+        } else {
+            const emptyActionCell = document.createElement("td");
+            emptyActionCell.dataset.label = "Action";
+            emptyActionCell.className = "action-cell";
+            row.appendChild(emptyActionCell);
+        }
+
         fragment.appendChild(row);
     });
 
     els.expensesBody.replaceChildren(fragment);
 
-    const hasExpenses = expenses.length > 0;
-    els.emptyState.classList.toggle("hidden", hasExpenses);
-    els.tableContainer.classList.toggle("hidden", !hasExpenses);
+    const hasTransactions = transactions.length > 0;
+    els.emptyState.classList.toggle("hidden", hasTransactions);
+    els.tableContainer.classList.toggle("hidden", !hasTransactions);
 
-    if (hasExpenses) {
+    if (hasTransactions) {
         els.tableContainer.querySelector("table").classList.remove("hidden");
     }
 }
@@ -171,9 +232,17 @@ function addCell(row, className, label, text) {
 }
 
 function saveData() {
-    localStorage.setItem("total", String(total));
-    localStorage.setItem("initialTotal", String(total));
-    localStorage.setItem("expenses", JSON.stringify(expenses));
+    localStorage.setItem("total", String(getRemainingBalance()));
+    localStorage.setItem("initialTotal", String(getTotalAdded()));
+    localStorage.setItem("transactions", JSON.stringify(transactions));
+    localStorage.setItem("expenses", JSON.stringify(transactions
+        .filter(function (item) { return item.type === "expense"; })
+        .map(function (item) {
+            return {
+                description: item.description,
+                amount: getTransactionAmount(item)
+            };
+        })));
 }
 
 function showMessage(title, message) {
@@ -246,7 +315,11 @@ function submitTotal() {
         return;
     }
 
-    total += addedAmount;
+    transactions.push({
+        type: "amount",
+        description: "Added Amount",
+        amount: addedAmount
+    });
 
     saveData();
     render();
@@ -274,7 +347,8 @@ function submitExpense() {
         return;
     }
 
-    expenses.push({
+    transactions.push({
+        type: "expense",
         description: description,
         amount: amount
     });
@@ -287,23 +361,24 @@ function submitExpense() {
     closeExpenseModal();
 }
 
-function deleteExpense(index) {
-    const removedItem = expenses[index];
+function deleteTransaction(index) {
+    const removedItem = transactions[index];
 
     if (!removedItem) return;
 
-    expenses.splice(index, 1);
+    transactions.splice(index, 1);
 
     saveData();
     render();
 }
 
 function deleteAllData() {
-    total = 0;
+    transactions = [];
     expenses = [];
 
     localStorage.removeItem("total");
     localStorage.removeItem("initialTotal");
+    localStorage.removeItem("transactions");
     localStorage.removeItem("expenses");
 
     closeConfirmModal();
@@ -312,7 +387,7 @@ function deleteAllData() {
 }
 
 function showTable() {
-    if (expenses.length === 0) {
+    if (transactions.length === 0) {
         els.emptyState.classList.remove("hidden");
         els.tableContainer.classList.add("hidden");
         return;
