@@ -250,12 +250,12 @@ td.amount {
 }
 
 td.result {
-    width: 37%;
+    width: 22%;
     color: #cbd5e1;
     text-align: right;
 }
 
-td.actions {
+td.action-cell {
     width: 12%;
     text-align: right;
 }
@@ -520,18 +520,18 @@ input:focus {
 
     .table-container td.result {
         color: #cbd5e1;
-        font-size: 0.9rem;
+        font-size: 0.95rem;
         line-height: 1.45;
         text-align: left;
         white-space: normal;
     }
 
-    .table-container td.actions {
+    .table-container td.action-cell {
         padding: 0 14px 14px;
         border-bottom: 0;
     }
 
-    .table-container td.actions::before {
+    .table-container td.action-cell::before {
         display: none;
     }
 

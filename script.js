@@ -7,6 +7,18 @@ try {
     expenses = [];
 }
 
+const savedInitialTotal = localStorage.getItem("initialTotal");
+
+if (savedInitialTotal !== null) {
+    total = Number(savedInitialTotal) || 0;
+} else if (expenses.length > 0) {
+    total += expenses.reduce(function (sum, item) {
+        return sum + (Number(item.amount) || 0);
+    }, 0);
+
+    localStorage.setItem("initialTotal", String(total));
+}
+
 const els = {
     amountResult: document.getElementById("amountResult"),
     addTotalButton: document.getElementById("addTotalButton"),
@@ -95,23 +107,31 @@ function render() {
 }
 
 function renderBalance() {
-    els.amountResult.textContent = "₱ " + formatMoney(total);
+    els.amountResult.textContent = "₱ " + formatMoney(getRemainingBalance());
+}
+
+function getRemainingBalance() {
+    return total - expenses.reduce(function (sum, item) {
+        return sum + (Number(item.amount) || 0);
+    }, 0);
 }
 
 function renderExpenses() {
     const fragment = document.createDocumentFragment();
-    let runningTotal = total;
+    let remainingBalance = getRemainingBalance();
 
     expenses.forEach(function (item, index) {
         const row = document.createElement("tr");
 
+        remainingBalance -= Number(item.amount) || 0;
+
         addCell(row, "description", "Description", item.description);
         addCell(row, "amount", "Amount", "₱" + formatMoney(item.amount));
-        addCell(row, "result", "Result", "₱" + formatMoney(runningTotal) + " - ₱" + formatMoney(item.amount) + " = ₱" + formatMoney(runningTotal - item.amount));
+        addCell(row, "result", "Remaining", "₱" + formatMoney(remainingBalance));
 
         const actionCell = document.createElement("td");
         actionCell.dataset.label = "Action";
-        actionCell.className = "actions";
+        actionCell.className = "action-cell";
 
         const deleteButton = document.createElement("button");
         deleteButton.type = "button";
@@ -123,15 +143,17 @@ function renderExpenses() {
         actionCell.appendChild(deleteButton);
         row.appendChild(actionCell);
         fragment.appendChild(row);
-
-        runningTotal -= item.amount;
     });
 
     els.expensesBody.replaceChildren(fragment);
 
     const hasExpenses = expenses.length > 0;
     els.emptyState.classList.toggle("hidden", hasExpenses);
-    els.tableContainer.querySelector("table").classList.toggle("hidden", !hasExpenses);
+    els.tableContainer.classList.toggle("hidden", !hasExpenses);
+
+    if (hasExpenses) {
+        els.tableContainer.querySelector("table").classList.remove("hidden");
+    }
 }
 
 function addCell(row, className, label, text) {
@@ -150,6 +172,7 @@ function addCell(row, className, label, text) {
 
 function saveData() {
     localStorage.setItem("total", String(total));
+    localStorage.setItem("initialTotal", String(total));
     localStorage.setItem("expenses", JSON.stringify(expenses));
 }
 
@@ -246,7 +269,7 @@ function submitExpense() {
         return;
     }
 
-    if (amount > total) {
+    if (amount > getRemainingBalance()) {
         showMessage("Insufficient Funds", "Your current balance is not enough for this expense.");
         return;
     }
@@ -255,8 +278,6 @@ function submitExpense() {
         description: description,
         amount: amount
     });
-
-    total -= amount;
 
     saveData();
     render();
@@ -270,8 +291,6 @@ function deleteExpense(index) {
     const removedItem = expenses[index];
 
     if (!removedItem) return;
-
-    total += removedItem.amount;
 
     expenses.splice(index, 1);
 
@@ -292,7 +311,14 @@ function deleteAllData() {
 }
 
 function showTable() {
+    if (expenses.length === 0) {
+        els.emptyState.classList.remove("hidden");
+        els.tableContainer.classList.add("hidden");
+        return;
+    }
+
     els.tableContainer.classList.remove("hidden");
+    els.tableContainer.querySelector("table").classList.remove("hidden");
 }
 
 function hideTable() {
