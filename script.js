@@ -118,7 +118,7 @@ function getRemainingBalance() {
 
 function renderExpenses() {
     const fragment = document.createDocumentFragment();
-    let remainingBalance = getRemainingBalance();
+    let remainingBalance = total;
 
     expenses.forEach(function (item, index) {
         const row = document.createElement("tr");
@@ -303,6 +303,7 @@ function deleteAllData() {
     expenses = [];
 
     localStorage.removeItem("total");
+    localStorage.removeItem("initialTotal");
     localStorage.removeItem("expenses");
 
     closeConfirmModal();
