@@ -105,7 +105,7 @@ function renderExpenses() {
     expenses.forEach(function (item, index) {
         const row = document.createElement("tr");
 
-        addCell(row, "", "Description", item.description);
+        addCell(row, "description", "Description", item.description);
         addCell(row, "amount", "Amount", "₱" + formatMoney(item.amount));
         addCell(row, "result", "Result", "₱" + formatMoney(runningTotal) + " - ₱" + formatMoney(item.amount) + " = ₱" + formatMoney(runningTotal - item.amount));
 
@@ -117,6 +117,7 @@ function renderExpenses() {
         deleteButton.type = "button";
         deleteButton.className = "inline-btn";
         deleteButton.textContent = "Delete";
+        deleteButton.setAttribute("aria-label", "Delete " + item.description);
         deleteButton.dataset.deleteIndex = index;
 
         actionCell.appendChild(deleteButton);
