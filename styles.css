@@ -111,17 +111,14 @@ button {
     transition: 0.2s;
 }
 
-/* normal hover */
 button:hover {
     background-color: #1a4d99;
 }
 
-/* red buttons */
 .btn-danger {
     background-color: #ff4d4d;
 }
 
-/* red hover stays red (or slightly darker) */
 .btn-danger:hover {
     background-color: #cc0000;
 }
