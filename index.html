@@ -26,8 +26,6 @@
             <button id="addExpenseButton" class="btn btn-secondary" type="button">Add Expense</button>
         </div>
 
-        <p id="alerts" class="alert" role="alert" aria-live="polite"></p>
-
         <section class="panel" aria-label="Expenses">
             <div class="section-header">
                 <div>
@@ -104,6 +102,27 @@
                     <button class="btn btn-ghost" type="button" data-close-modal="expenseModal">Cancel</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <div id="messageModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="messageTitle">
+        <div class="modal-card message-card">
+            <div class="message-icon" aria-hidden="true">!</div>
+            <h2 id="messageTitle">Notice</h2>
+            <p id="messageText"></p>
+            <button id="messageCloseButton" class="btn btn-primary" type="button" data-close-modal="messageModal">OK</button>
+        </div>
+    </div>
+
+    <div id="confirmModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+        <div class="modal-card confirm-card">
+            <div class="message-icon danger" aria-hidden="true">!</div>
+            <h2 id="confirmTitle">Delete All Data?</h2>
+            <p id="confirmText">This will remove your balance and all expenses.</p>
+            <div class="modal-actions">
+                <button id="confirmCancelButton" class="btn btn-ghost" type="button" data-close-modal="confirmModal">Cancel</button>
+                <button id="confirmOkButton" class="btn btn-danger" type="button">Delete All</button>
+            </div>
         </div>
     </div>
 

@@ -9,7 +9,6 @@ try {
 
 const els = {
     amountResult: document.getElementById("amountResult"),
-    alerts: document.getElementById("alerts"),
     addTotalButton: document.getElementById("addTotalButton"),
     addExpenseButton: document.getElementById("addExpenseButton"),
     deleteAllButton: document.getElementById("deleteAllButton"),
@@ -20,6 +19,12 @@ const els = {
     expensesBody: document.getElementById("expensesBody"),
     totalModal: document.getElementById("totalModal"),
     expenseModal: document.getElementById("expenseModal"),
+    messageModal: document.getElementById("messageModal"),
+    messageTitle: document.getElementById("messageTitle"),
+    messageText: document.getElementById("messageText"),
+    confirmModal: document.getElementById("confirmModal"),
+    confirmCancelButton: document.getElementById("confirmCancelButton"),
+    confirmOkButton: document.getElementById("confirmOkButton"),
     totalForm: document.getElementById("totalForm"),
     expenseForm: document.getElementById("expenseForm"),
     modalTotalAmount: document.getElementById("modalTotalAmount"),
@@ -31,7 +36,8 @@ render();
 
 els.addTotalButton.addEventListener("click", openTotalModal);
 els.addExpenseButton.addEventListener("click", openExpenseModal);
-els.deleteAllButton.addEventListener("click", deleteAllData);
+els.deleteAllButton.addEventListener("click", openConfirmModal);
+els.confirmOkButton.addEventListener("click", deleteAllData);
 els.showTableButton.addEventListener("click", showTable);
 els.hideTableButton.addEventListener("click", hideTable);
 
@@ -51,7 +57,7 @@ document.querySelectorAll("[data-close-modal]").forEach(function (button) {
     });
 });
 
-[els.totalModal, els.expenseModal].forEach(function (modal) {
+[els.totalModal, els.expenseModal, els.messageModal, els.confirmModal].forEach(function (modal) {
     modal.addEventListener("click", function (event) {
         if (event.target === modal) {
             closeModal(modal.id);
@@ -63,6 +69,8 @@ document.addEventListener("keydown", function (event) {
     if (event.key === "Escape") {
         closeTotalModal();
         closeExpenseModal();
+        closeMessageModal();
+        closeConfirmModal();
     }
 });
 
@@ -97,18 +105,12 @@ function renderExpenses() {
     expenses.forEach(function (item, index) {
         const row = document.createElement("tr");
 
-        const descriptionCell = document.createElement("td");
-        descriptionCell.textContent = item.description;
-
-        const amountCell = document.createElement("td");
-        amountCell.className = "amount";
-        amountCell.textContent = "₱" + formatMoney(item.amount);
-
-        const resultCell = document.createElement("td");
-        resultCell.className = "result";
-        resultCell.textContent = "₱" + formatMoney(runningTotal) + " - ₱" + formatMoney(item.amount) + " = ₱" + formatMoney(runningTotal - item.amount);
+        addCell(row, "", "Description", item.description);
+        addCell(row, "amount", "Amount", "₱" + formatMoney(item.amount));
+        addCell(row, "result", "Result", "₱" + formatMoney(runningTotal) + " - ₱" + formatMoney(item.amount) + " = ₱" + formatMoney(runningTotal - item.amount));
 
         const actionCell = document.createElement("td");
+        actionCell.dataset.label = "Action";
         actionCell.className = "actions";
 
         const deleteButton = document.createElement("button");
@@ -118,7 +120,7 @@ function renderExpenses() {
         deleteButton.dataset.deleteIndex = index;
 
         actionCell.appendChild(deleteButton);
-        row.append(descriptionCell, amountCell, resultCell, actionCell);
+        row.appendChild(actionCell);
         fragment.appendChild(row);
 
         runningTotal -= item.amount;
@@ -131,17 +133,36 @@ function renderExpenses() {
     els.tableContainer.querySelector("table").classList.toggle("hidden", !hasExpenses);
 }
 
+function addCell(row, className, label, text) {
+    const cell = document.createElement("td");
+
+    if (className) {
+        cell.className = className;
+    }
+
+    cell.dataset.label = label;
+    cell.textContent = text;
+    row.appendChild(cell);
+
+    return cell;
+}
+
 function saveData() {
     localStorage.setItem("total", String(total));
     localStorage.setItem("expenses", JSON.stringify(expenses));
 }
 
-function setAlert(message) {
-    els.alerts.textContent = message;
+function showMessage(title, message) {
+    els.messageTitle.textContent = title;
+    els.messageText.textContent = message;
+    els.messageModal.classList.add("show");
+
+    document.getElementById("messageCloseButton").focus();
 }
 
-function clearAlert() {
-    els.alerts.textContent = "";
+function openConfirmModal() {
+    els.confirmModal.classList.add("show");
+    els.confirmCancelButton.focus();
 }
 
 function openModal(modal) {
@@ -180,6 +201,14 @@ function closeExpenseModal() {
     closeModal("expenseModal");
 }
 
+function closeMessageModal() {
+    closeModal("messageModal");
+}
+
+function closeConfirmModal() {
+    closeModal("confirmModal");
+}
+
 function getAmount(input) {
     const amount = Number.parseFloat(input.value);
     return Number.isFinite(amount) ? amount : 0;
@@ -189,7 +218,7 @@ function submitTotal() {
     const addedAmount = getAmount(els.modalTotalAmount);
 
     if (!Number.isFinite(addedAmount) || addedAmount <= 0) {
-        setAlert("Enter an amount greater than 0.");
+        showMessage("Add Amount", "Enter an amount greater than 0.");
         return;
     }
 
@@ -197,7 +226,6 @@ function submitTotal() {
 
     saveData();
     render();
-    clearAlert();
 
     els.modalTotalAmount.value = "";
     closeTotalModal();
@@ -208,17 +236,17 @@ function submitExpense() {
     const amount = getAmount(els.modalAmount);
 
     if (!description) {
-        setAlert("Enter a description for this expense.");
+        showMessage("Add Expense", "Enter a description for this expense.");
         return;
     }
 
     if (!Number.isFinite(amount) || amount <= 0) {
-        setAlert("Enter an expense amount greater than 0.");
+        showMessage("Add Expense", "Enter an expense amount greater than 0.");
         return;
     }
 
     if (amount > total) {
-        setAlert("Insufficient funds!");
+        showMessage("Insufficient Funds", "Your current balance is not enough for this expense.");
         return;
     }
 
@@ -231,7 +259,6 @@ function submitExpense() {
 
     saveData();
     render();
-    clearAlert();
 
     els.modalDescription.value = "";
     els.modalAmount.value = "";
@@ -252,19 +279,15 @@ function deleteExpense(index) {
 }
 
 function deleteAllData() {
-    const confirmed = window.confirm("Delete all expenses and reset the balance?");
-
-    if (!confirmed) return;
-
     total = 0;
     expenses = [];
 
     localStorage.removeItem("total");
     localStorage.removeItem("expenses");
 
+    closeConfirmModal();
     hideTable();
     render();
-    clearAlert();
 }
 
 function showTable() {
