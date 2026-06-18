@@ -3,62 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#070a12">
     <title>Expense Tracker</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <main class="app-shell">
+        <header class="app-header">
+            <div>
+                <p class="eyebrow">Personal Finance</p>
+                <h1>Expense Tracker</h1>
+            </div>
+        </header>
 
-    <div class="title">Expense Tracker</div>
+        <section class="balance-card" aria-label="Current balance">
+            <span class="balance-label">Current Balance</span>
+            <strong id="amountResult">₱ 0.00</strong>
+        </section>
 
-    <div class="container">
-        <p class="balance-title">Current Balance</p>
-        <p id="amountResult">₱ 0.00</p>
-    </div>
+        <div class="actions" aria-label="Main actions">
+            <button id="addTotalButton" class="btn btn-primary" type="button">Add Amount</button>
+            <button id="addExpenseButton" class="btn btn-secondary" type="button">Add Expense</button>
+        </div>
 
-    <button onclick="openTotalModal()">Add Total</button><br>
-    <button onclick="openExpenseModal()">Add Expense</button><br>
-    <button class="btn-danger" onclick="deleteAllData()">Delete All Data</button>
+        <p id="alerts" class="alert" role="alert" aria-live="polite"></p>
 
-    <p id="alerts"></p>
+        <section class="panel" aria-label="Expenses">
+            <div class="section-header">
+                <div>
+                    <h2>Expenses</h2>
+                    <p>Track your spending after each purchase.</p>
+                </div>
+                <button id="deleteAllButton" class="btn btn-danger" type="button">Delete All Data</button>
+            </div>
 
-    <button onclick="showTable()">Show Table</button><br>
-    <button class="btn-danger" onclick="hideTable()">Close Table</button>
-    <div id="tableContainer" class="table-container">
-    <table>
-        <tr>
-            <th>Description</th>
-            <th>Amount</th>
-            <th>Result</th>
-            <th>Action</th>
-        </tr>
+            <div class="small-actions">
+                <button id="showTableButton" class="btn btn-ghost" type="button">Show Table</button>
+                <button id="hideTableButton" class="btn btn-ghost" type="button">Close Table</button>
+            </div>
 
-        <tr>
-            <td id="expenseDescription"></td>
-            <td id="expenseAmount"></td>
-            <td id="expenseResult"></td>
-            <td id="expenseActions"></td>
-        </tr>
-    </table>
-    </div>
+            <p id="emptyState" class="empty-state hidden">No expenses yet. Add your first expense to start tracking.</p>
 
-    <div id="totalModal" class="modal">
-        <div class="modal-content">
-            <h3>Add Total</h3>
-            <input type="number" id="modalTotalAmount" placeholder="Total Amount">
-            <button onclick="submitTotal()">Save</button>
-            <button class="btn-danger" onclick="closeTotalModal()">Close</button>
+            <div id="tableContainer" class="table-container hidden">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Result</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expensesBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <div id="totalModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="totalModalTitle">
+        <div class="modal-card">
+            <form id="totalForm">
+                <div class="modal-header">
+                    <div>
+                        <p class="eyebrow">Balance</p>
+                        <h2 id="totalModalTitle">Add Amount</h2>
+                    </div>
+                    <button class="icon-button" type="button" data-close-modal="totalModal" aria-label="Close add amount modal">×</button>
+                </div>
+
+                <label for="modalTotalAmount">Total Amount</label>
+                <input id="modalTotalAmount" type="number" inputmode="decimal" step="any" min="0" placeholder="0.00" autocomplete="off">
+
+                <div class="modal-actions">
+                    <button class="btn btn-primary" type="submit">Save Amount</button>
+                    <button class="btn btn-ghost" type="button" data-close-modal="totalModal">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <div id="expenseModal" class="modal">
-        <div class="modal-content">
-            <h3>Add Expense</h3>
+    <div id="expenseModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="expenseModalTitle">
+        <div class="modal-card">
+            <form id="expenseForm">
+                <div class="modal-header">
+                    <div>
+                        <p class="eyebrow">Spending</p>
+                        <h2 id="expenseModalTitle">Add Expense</h2>
+                    </div>
+                    <button class="icon-button" type="button" data-close-modal="expenseModal" aria-label="Close add expense modal">×</button>
+                </div>
 
-            <input type="text" id="modalDescription" placeholder="Description">
-            <input type="number" id="modalAmount" placeholder="Amount">
+                <label for="modalDescription">Description</label>
+                <input id="modalDescription" type="text" maxlength="80" placeholder="e.g. Lunch" autocomplete="off">
 
-            <button onclick="submitExpense()">Save</button>
-            <button class="btn-danger" onclick="closeExpenseModal()">Close</button>
+                <label for="modalAmount">Amount</label>
+                <input id="modalAmount" type="number" inputmode="decimal" step="any" min="0" placeholder="0.00" autocomplete="off">
+
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" type="submit">Save Expense</button>
+                    <button class="btn btn-ghost" type="button" data-close-modal="expenseModal">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
 
